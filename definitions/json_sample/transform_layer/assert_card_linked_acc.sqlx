@@ -1,0 +1,12 @@
+config {
+  type: "assertion",
+  schema: "transform_dataform",
+  name: "assert_card_linked_acc",
+  description: "Ensure every card is linked to an account"
+}
+ 
+SELECT
+  card_id
+FROM ${ref("stage_cards")}
+WHERE account_id IS NULL
+ 

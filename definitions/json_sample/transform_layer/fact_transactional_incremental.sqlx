@@ -1,0 +1,30 @@
+config {
+    type: "incremental",
+    schema: "transform_dataform",
+    name: "fact_transactions_incremental",
+    uniqueKey: ["transaction_numeric_id"],
+    description: "Incremental transaction fact table derived from stage_transactions"
+}
+ 
+SELECT
+  transaction_id,
+  customer_id,
+  account_id,
+  type,
+  amount,
+  currency,
+  TIMESTAMP(transaction_ts) AS transaction_ts,
+  status,
+  CURRENT_TIMESTAMP() AS ingestion_ts,
+  SAFE_CAST( REGEXP_REPLACE(transaction_id, r'[T_]', '') AS INT64 ) AS transaction_numeric_id
+FROM
+  ${ref("stage_transactions")}
+  ${
+      when(incremental(), `
+    WHERE SAFE_CAST(
+            REGEXP_REPLACE(transaction_id, r'[T_]', '')
+            AS INT64
+          ) NOT IN (
+            SELECT transaction_numeric_id FROM ${self()}
+          )`)
+  }

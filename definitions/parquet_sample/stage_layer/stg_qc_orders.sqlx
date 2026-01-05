@@ -1,0 +1,31 @@
+config {
+  type: "table",
+  schema: "stage_dataform",
+  name: "stg_qc_orders",
+}
+ 
+SELECT
+  order_id,
+  SAFE_CAST(order_timestamp AS TIMESTAMP) AS order_timestamp,
+  customer.customer_id,
+  INITCAP(TRIM(customer.name)) AS customer_name,
+  customer.phone,
+  customer.city,
+  payment.method AS payment_method,
+  payment.transaction_id,
+  payment.amount,
+  UPPER(payment.status) AS payment_status,
+  delivery.partner_id,
+  delivery.promised_minutes,
+  delivery.actual_minutes,
+  delivery.status AS delivery_status,
+  item.element.product_id AS product_id,
+  item.element.product_name AS product_name,
+  item.element.category AS category,
+  item.element.quantity AS quantity,
+  item.element.price AS price,
+  item.element.quantity * item.element.price AS item_amount
+FROM ${ref("raw_qc_orders")},
+UNNEST(items.list) AS item
+ORDER BY customer_name
+ 

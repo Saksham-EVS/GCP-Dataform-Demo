@@ -1,0 +1,17 @@
+config {
+  type: "incremental",
+  schema: "transform_dataform",
+  name: "incremental",
+  uniqueKey: ["order_id"]
+}
+ 
+SELECT 
+  order_id,
+  DATE(order_timestamp) AS order_date,
+  customer_id,
+  delivery_status
+FROM ${ref("stg_qc_orders")}
+ 
+${when(incremental(),
+  `WHERE DATE(order_timestamp) > (SELECT IFNULL(MAX(order_date), DATE '1900-01-01') FROM ${self()})`
+)}

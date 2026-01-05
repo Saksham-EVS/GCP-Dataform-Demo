@@ -1,0 +1,12 @@
+config {
+    type: "table",
+    schema: "transform_dataform",
+    name: "fact_orders"
+}
+ 
+SELECT
+    order_id,
+    DATE(order_timestamp) as order_date,
+    customer_id,
+    delivery_status
+FROM ${ref("stg_qc_orders")}
