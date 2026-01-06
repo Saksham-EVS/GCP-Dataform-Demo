@@ -1,0 +1,10 @@
+config {
+    type: "assertion",
+    schema: "transform_dataform",
+    name: "assestion"
+}
+ 
+SELECT * 
+FROM ${ref("stg_qc_orders")}
+WHERE order_id is NULL
+ 

@@ -1,0 +1,18 @@
+config {
+    type: "table",
+    schema: "stage_dataform",
+    name: "stage_cards"
+}
+ 
+SELECT
+  customer.customer_id,
+  account.account_id,
+  card.card_id,
+  card.type,
+  card.network,
+  card.expiry_date,
+  card.limit
+FROM ${ref("raw_bnk_data")} customer
+LEFT JOIN UNNEST(customer.accounts) AS account
+LEFT JOIN UNNEST(account.cards) AS card
+ORDER BY customer.customer_id
