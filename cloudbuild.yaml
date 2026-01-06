@@ -1,21 +1,21 @@
 logsBucket: "gs://x-to-bq-training/bq-dataform_demo/logs"
 
 steps:
-    - name: "node:18"
+    - name: "Installation Dataform"
       entrypoint: "bash"
       args:
         - "-c"
         - |
-          npm install -g @dataform/cli
+          npm install -g @dataform/core
     
-    - name: "node:18"
+    - name: "Compilation"
       entrypoint: "bash"
       args:
         - "-c"
         - |
           dataform compile
 
-    - name: "node:18"
+    - name: "Testing"
       entrypoint: "bash"
       args:
         - "-c"
