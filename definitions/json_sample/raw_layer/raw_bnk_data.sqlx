@@ -1,0 +1,10 @@
+config {
+    type: "table",
+    schema: "raw_dataform",
+    name: "raw_bnk_data"
+}
+ 
+LOAD DATA OVERWRITE ${self()}
+FROM FILES ( format = 'JSON',
+    uris = ['gs://x-to-bq-training/bq-dataform_demo/banking_data.jsonl'] )
+ 

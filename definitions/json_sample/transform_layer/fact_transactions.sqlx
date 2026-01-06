@@ -1,0 +1,26 @@
+config {
+  type: "table",
+  schema: "transform_dataform",
+  name: "fact_transactions",
+  description: "Full-load transaction fact table at transaction grain"
+}
+ 
+SELECT
+  transaction_id,
+  customer_id,
+  account_id,
+  type,
+  amount,
+  currency,
+  transaction_ts,
+  status,
+ 
+  -- derived metrics
+  CASE
+    WHEN status = 'SUCCESS' THEN amount
+    ELSE 0
+  END AS successful_amount,
+ 
+  DATE(transaction_ts) AS transaction_date
+ 
+FROM ${ref("stage_transactions")}

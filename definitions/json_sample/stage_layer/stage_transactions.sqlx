@@ -1,0 +1,20 @@
+config {
+    type: "table",
+    schema: "stage_dataform",
+    name: "stage_transactions"
+}
+ 
+ 
+SELECT
+  customer.customer_id,
+  account.account_id,
+  transaction.transaction_id,
+  transaction.type,
+  transaction.amount,
+  transaction.currency,
+  TIMESTAMP(transaction.timestamp) AS transaction_ts,
+  transaction.status
+FROM ${ref("raw_bnk_data")} customer
+LEFT JOIN UNNEST(customer.accounts) AS account
+LEFT JOIN UNNEST(account.transactions) AS transaction
+ORDER BY customer.customer_id
