@@ -1,5 +1,11 @@
 logsBucket: "gs://x-to-bq-training/bq-dataform_demo/logs"
 
+availableSecrets:
+  secretManager:
+    - versionName: projects/648723306784/secrets/Dataform-sec
+      env: "DF_CRED"
+
+
 steps:
     - id: "Dataform CI"
       name: "node:20"
@@ -7,6 +13,9 @@ steps:
       args:
         - -c
         - |
+          # Write credentials to Dataform's expected location
+          echo "$DF_CRED" > /workspace/.df-credentials.json
+
           npm install -g @dataform/cli
           dataform --version
           dataform compile
