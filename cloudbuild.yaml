@@ -1,0 +1,23 @@
+logsBucket: "gs://dataform-demo-logs"
+
+steps:
+    - name: "node:18"
+      entrypoint: "bash"
+      args:
+        - "-c"
+        - |
+          npm install -g @dataform/cli
+    
+    - name: "node:18"
+      entrypoint: "bash"
+      args:
+        - "-c"
+        - |
+          dataform compile
+
+    - name: "node:18"
+      entrypoint: "bash"
+      args:
+        - "-c"
+        - |
+          dataform test
