@@ -23,6 +23,3 @@ availableSecrets:
   secretManager:
     - versionName: "projects/648723306784/secrets/Dataform-sec/versions/latest"
       env: "_DF_CRED"
-
-
-# ckenkdwndwmdwmnkdwmkdmwdwd

@@ -9,4 +9,3 @@ product_id,
 SUM(item_amount) as revenue
 FROM ${ref("stg_qc_orders")}
 Group BY 1,2
- 
