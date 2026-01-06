@@ -7,7 +7,7 @@ steps:
       args:
         - "-c"
         - |
-          npm install -g @dataform/core
+          npm install -g @dataform/cli
     
     - id: "Compilation"
       name: "node:20"
