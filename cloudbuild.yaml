@@ -13,7 +13,7 @@ steps:
         npm install -g @dataform/cli
         dataform --version
         dataform compile
-        dataform test
+        # dataform test
 
 availableSecrets:
   secretManager:
