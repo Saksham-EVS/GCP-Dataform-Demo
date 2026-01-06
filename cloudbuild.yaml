@@ -1,4 +1,4 @@
-logsBucket: "gs://dataform-demo-logs"
+logsBucket: "gs://x-to-bq-training/bq-dataform_demo/logs"
 
 steps:
     - name: "node:18"
