@@ -1,5 +1,9 @@
 logsBucket: "gs://x-to-bq-training/bq-dataform_demo/logs"
-
+substitutions:
+  _LOCATION: us-central1
+  _REPO: dataform-demo
+  _PROJECT: neat-striker-447409-t5
+  _WORKSPACE: feature-saksham
 steps:
   - id: "Creating json file"
     name: "node:20"
@@ -9,10 +13,6 @@ steps:
       - -c
       - |
         echo "$$DF_CRED" > /workspace/.df-credentials.json
-        cat -n /workspace/.df-credentials.json
-        echo ">>> DEBUG RAW SECRET <<<"
-        echo "$$DF_CRED"
-        echo ">>> DEBUG END <<<"
 
 
   - id: "Create Compilation Result Resource"
@@ -24,15 +24,12 @@ steps:
       - |
         apt-get update && apt-get install -y jq
         echo "$$DF_CRED" > /workspace/.df-credentials.json
-        cat -n /workspace/.df-credentials.json
         gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json
+        
         _ACCESS_TOKEN=$(gcloud auth print-access-token)
 
-        _PROJECT="neat-striker-447409-t5"
-        _LOCATION="us-central1"
-        _REPO="dataform-demo"
-
-        _API_URL="https://dataform.googleapis.com/v1beta1/projects/${_PROJECT}/locations/${_LOCATION}/repositories/${_REPO}/compilationResults"
+        
+        _API_URL="https://dataform.googleapis.com/v1beta1/projects/${_PROJECT}/locations/${_LOCATION}/repositories/${_REPO}/workspaces/${_WORKSPACE}:compile"
 
         _RESPONSE=$(curl -s -X POST \
           -H "Authorization: Bearer $_ACCESS_TOKEN" \
