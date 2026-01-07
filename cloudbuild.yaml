@@ -17,6 +17,7 @@ steps:
       - -c
       - |
         npm install -g @dataform/cli
+        dataform compile
         export _RESULT="$(dataform compile)"
         echo $_RESULT
         echo $_RESULT >> /workspace/env.txt
