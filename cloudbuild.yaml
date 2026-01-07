@@ -25,8 +25,7 @@ steps:
         apt-get update && apt-get install -y jq
         gcloud components update
         echo "$$DF_CRED" > /workspace/.df-credentials.json
-        export GOOGLE_APPLICATION_CREDENTIALS=/workspace/.df-credentials.json
-        gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=${_PROJECT} --quiet
+        gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json --project=${_PROJECT} --quiet
         
         _ACCESS_TOKEN=$(gcloud auth print-access-token)
         echo "<<<<<<<<<<<<<<<  _ACCESS_TOKEN"
