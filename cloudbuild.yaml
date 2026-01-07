@@ -54,11 +54,11 @@ steps:
         apt-get update && apt-get install -y jq
         pip install --upgrade pip
         pip install dataform-unit-tests
-  # export COMPILATION_RESULT="$(cat /workspace/compilation_result_id.txt)"
         export COMPILATION_RESULT="projects/neat-striker-447409-t5/locations/us-central1/repositories/dataform-demo/compilationResults/56e12160-45ec-4a7b-9b85-f6f3efb5632e"
         export GCP_PROJECT_ID=neat-striker-447409-t5
         python -m dataform_unit_testing
 
+# export COMPILATION_RESULT="$(cat /workspace/compilation_result_id.txt)"
 
 availableSecrets:
   secretManager:
