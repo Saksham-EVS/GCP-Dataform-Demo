@@ -9,6 +9,7 @@ steps:
       - -c
       - |
         echo "$_DF_CRED" > /workspace/.df-credentials.json
+        sed -i '1{/^$/d}' /workspace/.df-credentials.json
         cat -n /workspace/.df-credentials.json
 
   - id: "Create Compilation Result Resource"
@@ -20,6 +21,7 @@ steps:
       - |
         apt-get update && apt-get install -y jq
         echo "$_DF_CRED" > /workspace/.df-credentials.json
+        sed -i '1{/^$/d}' /workspace/.df-credentials.json
         cat -n /workspace/.df-credentials.json
         gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json
         _ACCESS_TOKEN=$(gcloud auth print-access-token)
