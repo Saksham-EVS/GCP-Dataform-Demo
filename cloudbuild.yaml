@@ -41,13 +41,15 @@ steps:
         echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  _RESPONSE"
         echo "Response length: ${#_RESPONSE}"
         echo "Response: $_RESPONSE"
-        echo "Response (last 100 chars): ${_RESPONSE: -100}"
+        echo "Response (last 300 chars): ${_RESPONSE: -300}"
         
 
         _COMPILATION_RESULT_ID=$(echo "$_RESPONSE" | jq -r '.name')
 
         echo "<<<<<<<<<<<<<<<  _COMPILATION_RESULT_ID"
-        echo "${_COMPILATION_RESULT_ID}"
+        echo "ID Length:   ${#_COMPILATION_RESULT_ID}"
+        echo "ID---   ${_COMPILATION_RESULT_ID: -100}"
+
 
         echo "$_COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
         echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
