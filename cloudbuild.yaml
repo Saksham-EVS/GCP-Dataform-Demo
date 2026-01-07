@@ -16,7 +16,7 @@ steps:
         echo "$$DF_CRED" > /workspace/.df-credentials.json
         gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json --project=${_PROJECT} --quiet
         
-        _ACCESS_TOKEN=$(gcloud auth print-access-token)
+        _ACCESS_TOKEN=$(gcloud auth print-access-token --impersonate-service-account=648723306784-compute@developer.gserviceaccount.com)
         echo "----------------------TOKEN LEN: ${#_ACCESS_TOKEN}-----------------------------"
         
 
@@ -28,7 +28,7 @@ steps:
 
         echo "------------------------------- RESPONSE FROM API ----------------------------"
         echo "Response length: ${#_RESPONSE}"
-        echo "Response (last 600 chars): ${_RESPONSE: -600}"
+        echo "Response (last 1000 chars): ${_RESPONSE: -1000}"
         
 
         _COMPILATION_RESULT_ID=$(echo "$_RESPONSE" | jq -r '.name')
