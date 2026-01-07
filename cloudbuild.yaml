@@ -18,15 +18,6 @@ steps:
       - |
         npm install -g @dataform/cli
         dataform compile | tee /workspace/compile_output.txt
-    
-  # - id: "Extract CompilationResult Resource"
-  #   name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
-  #   entrypoint: "bash"
-  #   args:
-  #     - -c
-  #     - |
-  #       export _RESULT=$(jq -r '.name' /workspace/compilation_result.json)
-  #       echo $_RESULT > /workspace/compilation_result_uri
 
   - id: "Execute Dataform Unit Tests"
     name: "python:3.11"
@@ -37,14 +28,10 @@ steps:
         pip install --upgrade pip
         pip install dataform-unit-tests
         export COMPILATION_RESULT="$(cat /workspace/compile_output.txt)"
+        export GCP_PROJECT_ID=neat-striker-447409-t5
         python -m dataform_unit_testing
-    env:
-      - COMPILATION_RESULT=$(cat /workspace/compile_output.txt)
-      - GCP_PROJECT_ID=neat-striker-447409-t5
 
 availableSecrets:
   secretManager:
     - versionName: "projects/648723306784/secrets/Dataform-sec/versions/latest"
       env: "_DF_CRED"
-
-
