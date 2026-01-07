@@ -34,7 +34,7 @@ steps:
         echo "TOKEN (first 10 chars): ${_ACCESS_TOKEN:0:10}..."
 
         
-        _API_URL="https://dataform.googleapis.com/v1beta1/projects/${_PROJECT}/locations/${_LOCATION}/repositories/${_REPO}/workspaces/${_WORKSPACE}:compile"
+        _API_URL="https://dataform.googleapis.com/v1beta1/projects/${_PROJECT}/locations/${_LOCATION}/repositories/${_REPO}/compilationResults"
 
         echo "<<<<<<<<<<<<<<<  _API_URL"
         echo "${_API_URL}"
