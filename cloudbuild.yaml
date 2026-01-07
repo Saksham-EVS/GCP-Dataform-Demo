@@ -31,20 +31,23 @@ steps:
         echo "<<<<<<<<<<<<<<<  _ACCESS_TOKEN"
         echo "${_ACCESS_TOKEN}"
         echo "TOKEN LEN: ${#_ACCESS_TOKEN}"
+        echo "TOKEN (first 10 chars): ${_ACCESS_TOKEN:0:10}..."
 
         
         _API_URL="https://dataform.googleapis.com/v1beta1/projects/${_PROJECT}/locations/${_LOCATION}/repositories/${_REPO}/workspaces/${_WORKSPACE}:compile"
 
         echo "<<<<<<<<<<<<<<<  _API_URL"
         echo "${_API_URL}"
+        echo "API_URL (last 30 chars): ${_API_URL: -30}"
 
-        _RESPONSE=$(curl -s -X POST \
+        _RESPONSE=$(curl -v -X POST \
           -H "Authorization: Bearer $_ACCESS_TOKEN" \
           -H "Content-Type: application/json" \
           "$_API_URL")
 
         echo "<<<<<<<<<<<<<<<  _RESPONSE"
         echo "${_RESPONSE}"
+        echo "Response length: ${#_RESPONSE}"
         
 
         _COMPILATION_RESULT_ID=$(echo "$_RESPONSE" | jq -r '.name')
