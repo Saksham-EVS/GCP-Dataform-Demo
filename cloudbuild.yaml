@@ -20,12 +20,12 @@ steps:
         dataform compile > /workspace/compilation_result.json
     
   - id: "Extract CompilationResult Resource"
-    name: "jq"
+    name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
     entrypoint: "bash"
     args:
       - -c
       - |
-        export _RESULT=$(jq -r '.name' /workspace/compilation_result_gcp.json)
+        export _RESULT=$(jq -r '.name' /workspace/compilation_result.json)
         echo $_RESULT > /workspace/compilation_result_uri
 
   - id: "Execute Dataform Unit Tests"
