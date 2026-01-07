@@ -10,16 +10,29 @@ steps:
       - |
         echo "$_DF_CRED" > /workspace/.df-credentials.json
 
-  - id: "Install and Compile Dataform"
-    name: "node:20"
+  # - id: "Install and Compile Dataform"
+  #   name: "node:20"
+  #   entrypoint: "bash"
+  #   args:
+  #     - -c
+  #     - |
+  #       npm install -g @dataform/cli
+  #       dataform compile --json > /workspace/compilation_result.json
+
+  - id: "Create Compilation Result Resource"
+    name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
     entrypoint: "bash"
     args:
       - -c
       - |
-        npm install -g @dataform/cli
-        dataform compile | tee /workspace/compile_output.txt
-
-# dataform compile --json > /workspace/compilation_result.json
+        gcloud dataform compilation-results create \
+          --repository=dataform-demo \
+          --workspace=feature-saksham \
+          --location=us-central1 \
+          --project=neat-striker-447409-t5 \
+          --format=json > /workspace/compilation_result_api.json
+        
+        jq -r '.name' /workspace/compilation_result_api.json > /workspace/compilation_result_uri
 
   - id: "Execute Dataform Unit Tests"
     name: "python:3.11"
@@ -30,11 +43,9 @@ steps:
         apt-get update && apt-get install -y jq
         pip install --upgrade pip
         pip install dataform-unit-tests
-        export COMPILATION_RESULT="$(cat /workspace/compile_output.txt)"
-        export GCP_PROJECT_ID="neat-striker-447409-t5"
+        export COMPILATION_RESULT="$(cat /workspace/compilation_result_uri)"
+        export GCP_PROJECT_ID=neat-striker-447409-t5
         python -m dataform_unit_testing
-
-# export COMPILATION_RESULT="$(jq -c . /workspace/compilation_result.json)"
 
 availableSecrets:
   secretManager:
