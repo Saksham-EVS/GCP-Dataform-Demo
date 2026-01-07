@@ -28,7 +28,7 @@ steps:
 
         echo "------------------------------- RESPONSE FROM API ----------------------------"
         echo "Response length: ${#_RESPONSE}"
-        echo "Response (last 1000 chars): ${_RESPONSE: -1000}"
+        echo "Response (last 700 chars): ${_RESPONSE: -700}"
         
 
         _COMPILATION_RESULT_ID=$(echo "$_RESPONSE" | jq -r '.name')
@@ -39,9 +39,9 @@ steps:
 
 
         echo "$_COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
-        echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+        echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         cat /workspace/compilation_result_id.txt
-        echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+        echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 
 
 
@@ -51,7 +51,6 @@ steps:
     args:
       - -c
       - |
-        apt-get update && apt-get install -y jq
         pip install --upgrade pip
         pip install dataform-unit-tests
         pip install --no-cache-dir db-dtypes pandas pyarrow
