@@ -11,6 +11,10 @@ steps:
         echo "$_DF_CRED" > /workspace/.df-credentials.json
         sed -i '1{/^$/d}' /workspace/.df-credentials.json
         cat -n /workspace/.df-credentials.json
+        echo ">>> DEBUG RAW SECRET <<<"
+        echo "$_DF_CRED"
+        echo ">>> DEBUG END <<<"
+
 
   - id: "Create Compilation Result Resource"
     name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
@@ -59,5 +63,5 @@ steps:
 
 availableSecrets:
   secretManager:
-    - versionName: "projects/648723306784/secrets/Dataform-sec/versions/latest"
-      env: "_DF_CRED"
+    - versionName: projects/648723306784/secrets/Dataform-sec/versions/latest
+      env: '_DF_CRED'
