@@ -7,32 +7,32 @@
       {
         "order_id": "ORD_1066",
         "product_id": "PRD_01",
-        "item_amount": 60
+        "item_amount": "60"
       },
       {
         "order_id": "ORD_1066",
         "product_id": "PRD_01",
-        "item_amount": 180
+        "item_amount": "180"
       },
       {
         "order_id": "ORD_1066",
         "product_id": "PRD_02",
-        "item_amount": 200
+        "item_amount": "200"
       },
       {
         "order_id": "ORD_1123",
         "product_id": "PRD_03",
-        "item_amount": 7
+        "item_amount": "7"
       },
       {
         "order_id": "ORD_1123",
         "product_id": "PRD_03",
-        "item_amount": 28
+        "item_amount": "28"
       },
       {
         "order_id": "ORD_1123",
         "product_id": "PRD_05",
-        "item_amount": 90
+        "item_amount": "90"
       }
     ]
   },
