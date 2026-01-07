@@ -13,11 +13,12 @@ steps:
   - id: "Create Compilation Result Resource"
     name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
     entrypoint: bash
+    secretEnv: ["_DF_CRED"]
     args:
       - -c
       - |
         apt-get update && apt-get install -y jq
-
+        echo "$_DF_CRED" > /workspace/.df-credentials.json
         gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json
         _ACCESS_TOKEN=$(gcloud auth print-access-token)
 
