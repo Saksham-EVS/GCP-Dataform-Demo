@@ -18,11 +18,7 @@ steps:
         echo "$$DF_CRED" > /workspace/.df-credentials.json
         gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json --project=${_PROJECT} --quiet
         
-        _ACCESS_TOKEN=$(gcloud auth print-access-token)
-        log "Token length: ${#_ACCESS_TOKEN}"
-        echo "----------------------TOKEN LEN: ${#_ACCESS_TOKEN}-----------------------------"
         
-
         log "Calling Dataform API..."
         _RESPONSE=$(curl -X POST \
           -H "Authorization: Bearer $(gcloud auth print-access-token)" \
@@ -30,26 +26,19 @@ steps:
           -d '{"gitCommitish":"dev"}' \
           "https://dataform.googleapis.com/v1beta1/projects/neat-striker-447409-t5/locations/us-central1/repositories/dataform-demo/compilationResults")
 
-        echo "------------------------------- RESPONSE FROM API ----------------------------"
-        echo "Response length: ${#_RESPONSE}"
-        echo "Response (last 700 chars): ${_RESPONSE: -700}"
         log "Response length: ${#_RESPONSE}"
         log "Response raw: ${_RESPONSE}"
         
 
         _COMPILATION_RESULT_ID=$(echo "$_RESPONSE" | jq -r '.name')
 
-        echo "------------------------------ COMPILATION_RESULT_ID --------------------------"
         log "Compilation Result ID length: ${#_COMPILATION_RESULT_ID}"
         log "Compilation Result ID: ${_COMPILATION_RESULT_ID}"
 
 
         echo "$_COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
-        echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         log "Contents of written file:"
-        cat /workspace/compilation_result_id.txt
         log "$(cat /workspace/compilation_result_id.txt)"
-        echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 
 
 
