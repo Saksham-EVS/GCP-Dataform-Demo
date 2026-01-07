@@ -17,12 +17,31 @@ steps:
       - -c
       - |
         npm install -g @dataform/cli
-        dataform compile
+        dataform compile > /workspace/compilation_result.json
+
+  - id: "Setup Python"
+    name: "python:3.11"
+    entrypoint: "bash"
+    args:
+      - -c
+      - |
+        pip install --upgrade pip
+        pip install dataform-unit-tests
+
+  - id: "Execute Dataform Unit Tests"
+    name: "python:3.11"
+    entrypoint: "bash"
+    args:
+      - -c
+      - |
+        python -m dataform_unit_testing
+    env:
+      - COMPILATION_RESULT=/workspace/compilation_result.json
+      - GCP_PROJECT_ID=neat-striker-447409-t5
 
 availableSecrets:
   secretManager:
     - versionName: "projects/648723306784/secrets/Dataform-sec/versions/latest"
       env: "_DF_CRED"
 
-    #   SAKSHAM
-#tanurisgod
+
