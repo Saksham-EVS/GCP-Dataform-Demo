@@ -21,11 +21,11 @@ steps:
         gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json
         ACCESS_TOKEN=$(gcloud auth print-access-token)
 
-        PROJECT="neat-striker-447409-t5"
-        LOCATION="us-central1"
-        REPO="dataform-demo"
+        _PROJECT="neat-striker-447409-t5"
+        _LOCATION="us-central1"
+        _REPO="dataform-demo"
 
-        API_URL="https://dataform.googleapis.com/v1beta1/projects/${PROJECT}/locations/${LOCATION}/repositories/${REPO}/compilationResults"
+        API_URL="https://dataform.googleapis.com/v1beta1/projects/${_PROJECT}/locations/${_LOCATION}/repositories/${_REPO}/compilationResults"
 
         RESPONSE=$(curl -s -X POST \
           -H "Authorization: Bearer $ACCESS_TOKEN" \
