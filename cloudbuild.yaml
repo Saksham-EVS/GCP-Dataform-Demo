@@ -44,9 +44,11 @@ steps:
         echo "REPO: ${_REPO}"
         echo "WORKSPACE: ${_WORKSPACE}"
 
-        _RESPONSE=$(curl -s -X POST \
+        _RESPONSE=$(curl -w "\nHTTP STATUS: %{http_code}\n" \
+          -v -X POST \
           -H "Authorization: Bearer $_ACCESS_TOKEN" \
           -H "Content-Type: application/json" \
+          -d '{}' \
           "$_API_URL")
 
         echo "<<<<<<<<<<<<<<<  _RESPONSE"
