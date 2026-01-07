@@ -17,7 +17,8 @@ steps:
       - -c
       - |
         npm install -g @dataform/cli
-        dataform compile --json > /workspace/compilation_result.json
+        export _RESULT="$(dataform compile)"
+        echo "_RESULT=$_RESULT" >> /workspace/env.txt
     
   # - id: "Extract CompilationResult Resource"
   #   name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
@@ -38,7 +39,7 @@ steps:
         pip install dataform-unit-tests
         python -m dataform_unit_testing
     env:
-      - COMPILATION_RESULT=$(cat /workspace/compilation_result.json)
+      - COMPILATION_RESULT=$(cat /workspace/env.txt)
       - GCP_PROJECT_ID=neat-striker-447409-t5
 
 availableSecrets:
