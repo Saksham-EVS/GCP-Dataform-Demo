@@ -20,12 +20,13 @@ steps:
   #       dataform compile --json > /workspace/compilation_result.json
 
   - id: "Create Compilation Result Resource"
-    name: "gcr.io/google.com/cloudsdktool/cloud-sdk:latest"
+    name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
     entrypoint: "bash"
     args:
       - -c
       - |
         apt-get update && apt-get install -y jq
+        gcloud components install dataform --quiet
         gcloud dataform compilation-results create \
           --repository=dataform-demo \
           --workspace=feature-saksham \
