@@ -4,21 +4,21 @@ steps:
   - id: "Creating json file"
     name: "node:20"
     entrypoint: "bash"
-    secretEnv: ["_DF_CRED"]
+    secretEnv: ['_DF_CRED']
     args:
       - -c
       - |
-        echo "$_DF_CRED" > /workspace/.df-credentials.json
+        echo "$$_DF_CRED" > /workspace/.df-credentials.json
         cat -n /workspace/.df-credentials.json
         echo ">>> DEBUG RAW SECRET <<<"
-        echo "$_DF_CRED"
+        echo "$$_DF_CRED"
         echo ">>> DEBUG END <<<"
 
 
   - id: "Create Compilation Result Resource"
     name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
     entrypoint: bash
-    secretEnv: ["_DF_CRED"]
+    secretEnv: ['_DF_CRED']
     args:
       - -c
       - |
@@ -62,4 +62,4 @@ steps:
 availableSecrets:
   secretManager:
     - versionName: projects/648723306784/secrets/Dataform-secret/versions/latest
-      env: _DF_CRED
+      env: '_DF_CRED'
