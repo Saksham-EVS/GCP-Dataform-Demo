@@ -25,8 +25,8 @@ steps:
     args:
       - -c
       - |
-        export RESULT=$(jq -r '.name' /workspace/compilation_result_gcp.json)
-        echo $RESULT > /workspace/compilation_result_uri
+        export _RESULT=$(jq -r '.name' /workspace/compilation_result_gcp.json)
+        echo $_RESULT > /workspace/compilation_result_uri
 
   - id: "Execute Dataform Unit Tests"
     name: "python:3.11"
@@ -36,10 +36,9 @@ steps:
       - |
         pip install --upgrade pip
         pip install dataform-unit-tests
-        export COMPILATION_RESULT=$(cat /workspace/compilation_result_uri)
         python -m dataform_unit_testing
     env:
-      - COMPILATION_RESULT=/workspace/compilation_result.json
+      - COMPILATION_RESULT=$(cat /workspace/compilation_result_uri)
       - GCP_PROJECT_ID=neat-striker-447409-t5
 
 availableSecrets:
