@@ -28,7 +28,7 @@ steps:
         pip install --upgrade pip
         pip install dataform-unit-tests
         export COMPILATION_RESULT="$(cat /workspace/compile_output.txt)"
-        export GCP_PROJECT_ID=neat-striker-447409-t5
+        export GCP_PROJECT_ID="neat-striker-447409-t5"
         python -m dataform_unit_testing
 
 availableSecrets:
