@@ -17,7 +17,15 @@ steps:
       - -c
       - |
         npm install -g @dataform/cli
-        dataform compile | jq -c '.' > /workspace/compilation.txt
+        dataform compile | node -e "
+          let fs = require('fs');
+          let input = '';
+          process.stdin.on('data', chunk => input += chunk);
+          process.stdin.on('end', () => {
+            const flat = JSON.stringify(JSON.parse(input));
+            fs.writeFileSync('/workspace/compilation.txt', flat);
+          });
+        "
     
   # - id: "Extract CompilationResult Resource"
   #   name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
