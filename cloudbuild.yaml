@@ -38,9 +38,13 @@ steps:
 
         echo "<<<<<<<<<<<<<<<  _API_URL"
         echo "${_API_URL}"
-        echo "API_URL (last 30 chars): ${_API_URL: -30}"
+        echo "API_URL (last 150 chars): ${_API_URL: -150}"
+        echo "PROJECT: ${_PROJECT}"
+        echo "LOCATION: ${_LOCATION}"
+        echo "REPO: ${_REPO}"
+        echo "WORKSPACE: ${_WORKSPACE}"
 
-        _RESPONSE=$(curl -v -X POST \
+        _RESPONSE=$(curl -s -X POST \
           -H "Authorization: Bearer $_ACCESS_TOKEN" \
           -H "Content-Type: application/json" \
           "$_API_URL")
