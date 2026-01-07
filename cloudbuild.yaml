@@ -36,6 +36,7 @@ steps:
       - |
         pip install --upgrade pip
         pip install dataform-unit-tests
+        export COMPILATION_RESULT="$(cat /workspace/compile_output.txt)"
         python -m dataform_unit_testing
     env:
       - COMPILATION_RESULT=$(cat /workspace/compile_output.txt)
