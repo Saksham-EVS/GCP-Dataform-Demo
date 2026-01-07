@@ -11,30 +11,30 @@ steps:
         echo "$_DF_CRED" > /workspace/.df-credentials.json
 
   - id: "Create Compilation Result Resource"
-  name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
-  entrypoint: bash
-  args:
-    - -c
-    - |
-      apt-get update && apt-get install -y jq
+    name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        apt-get update && apt-get install -y jq
 
-      gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json
-      ACCESS_TOKEN=$(gcloud auth print-access-token)
+        gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json
+        ACCESS_TOKEN=$(gcloud auth print-access-token)
 
-      PROJECT="neat-striker-447409-t5"
-      LOCATION="us-central1"
-      REPO="dataform-demo"
+        PROJECT="neat-striker-447409-t5"
+        LOCATION="us-central1"
+        REPO="dataform-demo"
 
-      API_URL="https://dataform.googleapis.com/v1beta1/projects/${PROJECT}/locations/${LOCATION}/repositories/${REPO}/compilationResults"
+        API_URL="https://dataform.googleapis.com/v1beta1/projects/${PROJECT}/locations/${LOCATION}/repositories/${REPO}/compilationResults"
 
-      RESPONSE=$(curl -s -X POST \
-        -H "Authorization: Bearer $ACCESS_TOKEN" \
-        -H "Content-Type: application/json" \
-        "$API_URL")
+        RESPONSE=$(curl -s -X POST \
+          -H "Authorization: Bearer $ACCESS_TOKEN" \
+          -H "Content-Type: application/json" \
+          "$API_URL")
 
-      COMPILATION_RESULT_ID=$(echo "$RESPONSE" | jq -r '.name')
+        COMPILATION_RESULT_ID=$(echo "$RESPONSE" | jq -r '.name')
 
-      echo "$COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
+        echo "$COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
 
 
 
