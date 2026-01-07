@@ -39,6 +39,9 @@ steps:
         _COMPILATION_RESULT_ID=$(echo "$_RESPONSE" | jq -r '.name')
 
         echo "$_COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
+        echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+        cat /workspace/compilation_result.txt
+        echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 
 
 
