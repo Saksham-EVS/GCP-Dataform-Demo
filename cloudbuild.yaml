@@ -13,32 +13,27 @@ steps:
       - -c
       - |
         set -exuo pipefail
-        log() { printf "%s\n" "$*" >&2; }
         apt-get update && apt-get install -y jq
         echo "$$DF_CRED" > /workspace/.df-credentials.json
         gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json --project=${_PROJECT} --quiet
-        
-        
-        log "Calling Dataform API..."
         _RESPONSE=$(curl -X POST \
           -H "Authorization: Bearer $(gcloud auth print-access-token)" \
           -H "Content-Type: application/json" \
           -d '{"gitCommitish":"dev"}' \
           "https://dataform.googleapis.com/v1beta1/projects/neat-striker-447409-t5/locations/us-central1/repositories/dataform-demo/compilationResults")
 
-        log "Response length: ${#_RESPONSE}"
-        log "Response raw: ${_RESPONSE}"
-        
-
-        _COMPILATION_RESULT_ID=$(echo "$_RESPONSE" | jq -r '.name')
-
-        log "Compilation Result ID length: ${#_COMPILATION_RESULT_ID}"
-        log "Compilation Result ID: ${_COMPILATION_RESULT_ID}"
-
-
+        echo "------------------------------- RESPONSE FROM API ----------------------------"
+        echo "Response length: ${#_RESPONSE}"
+        echo "$_RESPONSE" > /workspace/response.json
+        cat -n /workspace/response.json
+        _COMPILATION_RESULT_ID=$(jq -r '.name' /workspace/response.json)
+        echo "------------------------------ COMPILATION_RESULT_ID --------------------------"
+        echo "Compilation Result ID length: ${#_COMPILATION_RESULT_ID}"
+        echo "Compilation Result ID: ${_COMPILATION_RESULT_ID}"
         echo "$_COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
-        log "Contents of written file:"
-        log "$(cat /workspace/compilation_result_id.txt)"
+        echo "-------------------------------------------------------------------------------"
+        cat /workspace/compilation_result_id.txt
+        echo "-------------------------------------------------------------------------------"
 
 
 
