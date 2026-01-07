@@ -30,18 +30,13 @@ steps:
         echo "<<<<<<<<<<<<<<<  _ACCESS_TOKEN"
         echo "TOKEN LEN: ${#_ACCESS_TOKEN}"
         echo "TOKEN (first 10 chars): ${_ACCESS_TOKEN:0:10}"
-        _API_URL="https://dataform.googleapis.com/v1beta1/projects/${_PROJECT}/locations/${_LOCATION}/repositories/${_REPO}/workspaces/${_WORKSPACE}:compile"
-        echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  _API_URL"
-        echo "API_URL=${_API_URL}"
-        echo "API_URL (last 180 chars): ${_API_URL: -180}"
         
 
-        _RESPONSE=$(curl -s -w "\nHTTP STATUS: %{http_code}\n" \
-          -X POST \
+        _RESPONSE=$(curl -X POST \
           -H "Authorization: Bearer $_ACCESS_TOKEN" \
           -H "Content-Type: application/json" \
-          -d '{}' \
-          "$_API_URL")
+          -d '{"workspace":"projects/neat-striker-447409-t5/locations/us-central1/repositories/dataform-demo/workspaces/dev"}' \
+          "https://dataform.googleapis.com/v1beta1/projects/neat-striker-447409-t5/locations/us-central1/repositories/dataform-demo/compilationResults")
 
         echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  _RESPONSE"
         echo "Response length: ${#_RESPONSE}"
