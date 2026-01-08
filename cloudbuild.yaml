@@ -12,7 +12,6 @@ steps:
     args:
       - -c
       - |
-        apt-get update && apt-get install -y jq
         echo "$$DF_CRED" > /workspace/.df-credentials.json
         gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json --project=${_PROJECT} --quiet
         curl -s -X POST \
@@ -32,6 +31,7 @@ steps:
       - |
         pip install --upgrade pip
         apt-get update && apt-get install -y jq
+        pip install google-cloud-bigquery-storage
         pip install dataform-unit-tests
         pip install --no-cache-dir db-dtypes pandas pyarrow
         export COMPILATION_RESULT="$(jq -r '.name' /workspace/response_clean.json)"
