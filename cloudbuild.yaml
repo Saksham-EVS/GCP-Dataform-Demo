@@ -50,7 +50,7 @@ steps:
         pip install --no-cache-dir db-dtypes pandas pyarrow
         export COMPILATION_RESULT="$(jq -r '.name' /workspace/response_clean.json)"
         export GCP_PROJECT_ID=neat-striker-447409-t5
-        python -m dataform_unit_tests
+        python -m dataform_unit_testing
 
 # export COMPILATION_RESULT="$(cat /workspace/compilation_result_id.txt)"
 
