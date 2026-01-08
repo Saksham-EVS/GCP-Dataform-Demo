@@ -23,8 +23,22 @@ steps:
           | tee /workspace/response.json
         echo "------------------------------- RESPONSE FROM API -------------------------"
         cat /workspace/response.json
+        
+        echo "---------------------- FILE DEBUG ----------------------"
+
+        echo "File metadata:"
         ls -l /workspace/response.json
+
+        echo "File size:"
         wc -c /workspace/response.json
+
+        echo "File content (raw):"
+        cat -A /workspace/response.json
+
+        echo "JSON validity check:"
+        jq empty /workspace/response.json 2>&1 || echo "❌ INVALID JSON FILE"
+
+        echo "---------------------------------------------------------"
 
         _COMPILATION_RESULT_ID=$(jq -r '.name' /workspace/response.json) 
 
