@@ -16,7 +16,7 @@ steps:
         apt-get update && apt-get install -y jq
         echo "$$DF_CRED" > /workspace/.df-credentials.json
         gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json --project=${_PROJECT} --quiet
-        _RESPONSE=$(curl -X POST \
+        _RESPONSE=$(curl -s -X POST \
           -H "Authorization: Bearer $(gcloud auth print-access-token)" \
           -H "Content-Type: application/json" \
           -d '{"gitCommitish":"dev"}' \
@@ -24,12 +24,14 @@ steps:
 
         echo "------------------------------- RESPONSE FROM API ----------------------------"
         echo "Response length: ${#_RESPONSE}"
-        echo "$_RESPONSE" > /workspace/response.json
-        cat -n /workspace/response.json
-        _COMPILATION_RESULT_ID=$(jq -r '.name' /workspace/response.json)
+        echo "$_RESPONSE" | jq .
+        
+        _COMPILATION_RESULT_ID=$(echo "$_RESPONSE" | jq -r '.name')
+
         echo "------------------------------ COMPILATION_RESULT_ID --------------------------"
         echo "Compilation Result ID length: ${#_COMPILATION_RESULT_ID}"
         echo "Compilation Result ID: ${_COMPILATION_RESULT_ID}"
+        
         echo "$_COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
         echo "-------------------------------------------------------------------------------"
         cat /workspace/compilation_result_id.txt
