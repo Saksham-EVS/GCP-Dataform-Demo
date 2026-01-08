@@ -21,21 +21,7 @@ steps:
           -d '{"gitCommitish":"dev"}' \
           "https://dataform.googleapis.com/v1beta1/projects/${_PROJECT}/locations/${_LOCATION}/repositories/${_REPO}/compilationResults" \
           | tee /workspace/response.json
-
         tr -d '\r' < /workspace/response.json > /workspace/response_clean.json
-        jq -r '.name' /workspace/response_clean.json
-
-        _COMPILATION_RESULT_ID=$(jq -r '.name' /workspace/response_clean.json) 
-
-        echo "------------------------------ COMPILATION_RESULT_ID --------------------------"
-        echo "Compilation Result ID: ${_COMPILATION_RESULT_ID}"
-
-        echo "$_COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
-        
-        echo "-------------------------------------------------------------------------------"
-        cat /workspace/compilation_result_id.txt
-        echo "-------------------------------------------------------------------------------"
-
 
 
   - id: "Execute Dataform Unit Tests"
@@ -51,8 +37,6 @@ steps:
         export COMPILATION_RESULT="$(jq -r '.name' /workspace/response_clean.json)"
         export GCP_PROJECT_ID=neat-striker-447409-t5
         python -m dataform_unit_testing
-
-# export COMPILATION_RESULT="$(cat /workspace/compilation_result_id.txt)"
 
 availableSecrets:
   secretManager:
