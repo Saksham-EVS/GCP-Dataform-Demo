@@ -1,11 +1,11 @@
 config {
     type: "table",
     schema: "transform_dataform",
-    name: "fact_items"
+    name: "fact_items_fail"
 }
  
 SELECT order_id,
 product_id,
 SUM(item_amount) as revenue
 FROM ${ref("stg_qc_orders")}
-Group BY 1,2
+Group BY 1
