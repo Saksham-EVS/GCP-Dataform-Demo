@@ -43,7 +43,7 @@ steps:
 
         echo "Where is jq?"
         which jq || echo "jq NOT FOUND"
-        _COMPILATION_RESULT_ID=$($(which jq) -r '.name' /workspace/response.json) 
+        _COMPILATION_RESULT_ID=$(/usr/bin/jq -r '.name' /workspace/response.json) 
 
         echo "------------------------------ COMPILATION_RESULT_ID --------------------------"
         echo "Compilation Result ID: ${_COMPILATION_RESULT_ID}"
