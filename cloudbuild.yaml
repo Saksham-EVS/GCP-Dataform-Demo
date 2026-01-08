@@ -25,8 +25,7 @@ steps:
         cat /workspace/response.json
         echo "------------------------------- RESPONSE FROM API -------------------------"
         
-        tr -d '\r' < /workspace/response.json > /workspace/response_clean.json
-        _COMPILATION_RESULT_ID=$(jq -r '.name' /workspace/response_clean.json)
+        _COMPILATION_RESULT_ID=$(tr -d '\r' < /workspace/response.json | jq -r '.name')
 
         echo "-------------------------- COMPILATION_RESULT_ID --------------------------"
         echo "Compilation Result ID: ${_COMPILATION_RESULT_ID}"
