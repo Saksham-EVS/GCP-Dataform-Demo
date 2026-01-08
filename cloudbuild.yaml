@@ -23,6 +23,8 @@ steps:
           | tee /workspace/response.json
         echo "------------------------------- RESPONSE FROM API -------------------------"
         cat /workspace/response.json
+        ls -l /workspace/response.json
+        wc -c /workspace/response.json
 
         _COMPILATION_RESULT_ID=$(jq -r '.name' /workspace/response.json) 
 
