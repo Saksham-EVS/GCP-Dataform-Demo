@@ -33,10 +33,17 @@ steps:
         wc -c /workspace/response.json
 
         echo "File content (raw):"
-        cat -A /workspace/response.json
+        cat /workspace/response.json
 
         echo "JSON validity check:"
         jq empty /workspace/response.json 2>&1 || echo "❌ INVALID JSON FILE"
+
+        echo "XXXXXXXXXXXXXXXXX:"
+        jq '.' /workspace/response.json
+
+        echo "YYYYYYYYYYYYYYYYYYYYYYYYYY:"
+        tr -d '\r' < /workspace/response.json > /workspace/response_clean.json
+        jq -r '.name' /workspace/response_clean.json
 
         echo "---------------------------------------------------------"
 
