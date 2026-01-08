@@ -12,7 +12,6 @@ steps:
     args:
       - -c
       - |
-        set -exuo pipefail
         apt-get update && apt-get install -y jq
         echo "$$DF_CRED" > /workspace/.df-credentials.json
         gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json --project=${_PROJECT} --quiet
@@ -24,15 +23,15 @@ steps:
 
         echo "------------------------------- RESPONSE FROM API ----------------------------"
         echo "Response length: ${#_RESPONSE}"
-        echo "$_RESPONSE" | jq .
+        echo "$_RESPONSE" | tee /workspace/response.json
         
-        _COMPILATION_RESULT_ID=$(echo "$_RESPONSE" | jq -r '.name')
+        _COMPILATION_RESULT_ID=$(grep '"name"' /workspace/response.json | head -n1 | sed -E 's/.*"name": ?"([^"]+)".*/\1/')
 
         echo "------------------------------ COMPILATION_RESULT_ID --------------------------"
         echo "Compilation Result ID length: ${#_COMPILATION_RESULT_ID}"
         echo "Compilation Result ID: ${_COMPILATION_RESULT_ID}"
-        
-        echo "$_COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
+
+        echo "$_COMPILATION_RESULT_ID" | tee /workspace/compilation_result_id.txt
         echo "-------------------------------------------------------------------------------"
         cat /workspace/compilation_result_id.txt
         echo "-------------------------------------------------------------------------------"
