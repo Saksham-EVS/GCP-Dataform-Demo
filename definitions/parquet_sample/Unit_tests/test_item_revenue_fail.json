@@ -1,6 +1,6 @@
 {
-  "name": "Test revenue aggregation by order and product",
-  "description": "Validates that stg_qc_orders correctly sums item_amount grouped by order_id and product_id",
+  "name": "Test revenue aggregation by order and product [FAIL]",
+  "description": "Validates that stg_qc_orders correctly sums item_amount grouped by order_id and product_id [FAIL]",
   "model_to_test": "transform_dataform.fact_items_fail",
   "input_data": {
     "stage_dataform.stg_qc_orders": [
