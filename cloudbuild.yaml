@@ -21,15 +21,14 @@ steps:
           -d '{"gitCommitish":"dev"}' \
           "https://dataform.googleapis.com/v1beta1/projects/${_PROJECT}/locations/${_LOCATION}/repositories/${_REPO}/compilationResults" \
           | tee /workspace/response.json
-        echo "------------------------------- RESPONSE FROM API -------------------------"
-        cat /workspace/response.json
-        echo "------------------------------- RESPONSE FROM API -------------------------"
-        
-        _COMPILATION_RESULT_ID=$(tr -d '\r' < /workspace/response.json | jq -r '.name')
 
-        echo "-------------------------- COMPILATION_RESULT_ID --------------------------"
+        tr -d '\r' < /workspace/response.json > /workspace/response_clean.json
+        jq -r '.name' /workspace/response_clean.json
+
+        _COMPILATION_RESULT_ID=$(jq -r '.name' /workspace/response_clean.json) 
+
+        echo "------------------------------ COMPILATION_RESULT_ID --------------------------"
         echo "Compilation Result ID: ${_COMPILATION_RESULT_ID}"
-        echo "-------------------------- COMPILATION_RESULT_ID --------------------------"
 
         echo "$_COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
         
@@ -45,10 +44,11 @@ steps:
     args:
       - -c
       - |
+        apt-get update && apt-get install -y jq
         pip install --upgrade pip
         pip install dataform-unit-tests
         pip install --no-cache-dir db-dtypes pandas pyarrow
-        export COMPILATION_RESULT="$(cat /workspace/compilation_result_id.txt)"
+        export COMPILATION_RESULT="$(jq -r '.name' /workspace/response_clean.json)"
         export GCP_PROJECT_ID=neat-striker-447409-t5
         python -m dataform-unit-tests
 
