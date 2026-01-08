@@ -3,7 +3,6 @@ substitutions:
   _LOCATION: us-central1
   _REPO: dataform-demo
   _PROJECT: neat-striker-447409-t5
-  _WORKSPACE: feature-saksham
 steps:
   - id: "Create Compilation Result Resource"
     name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
