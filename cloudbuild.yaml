@@ -21,14 +21,11 @@ steps:
           -d '{"gitCommitish":"dev"}' \
           "https://dataform.googleapis.com/v1beta1/projects/neat-striker-447409-t5/locations/us-central1/repositories/dataform-demo/compilationResults")
 
-        echo "------------------------------- RESPONSE FROM API ----------------------------"
-        echo "Response length: ${#_RESPONSE}"
+        echo "------------------------------- RESPONSE FROM API -------------------------"
         echo "$_RESPONSE" | tee /workspace/response.json
-        
-        _COMPILATION_RESULT_ID=$(grep '"name"' /workspace/response.json | head -n1 | sed -E 's/.*"name": ?"([^"]+)".*/\1/')
 
+        _COMPILATION_RESULT_ID=$(echo "$_RESPONSE" | jq -r '.name') echo "$_COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
         echo "------------------------------ COMPILATION_RESULT_ID --------------------------"
-        echo "Compilation Result ID length: ${#_COMPILATION_RESULT_ID}"
         echo "Compilation Result ID: ${_COMPILATION_RESULT_ID}"
 
         echo "$_COMPILATION_RESULT_ID" | tee /workspace/compilation_result_id.txt
@@ -47,9 +44,9 @@ steps:
         pip install --upgrade pip
         pip install dataform-unit-tests
         pip install --no-cache-dir db-dtypes pandas pyarrow
-        export COMPILATION_RESULT="projects/neat-striker-447409-t5/locations/us-central1/repositories/dataform-demo/compilationResults/48fcbfeb-66e3-4322-9fad-3c20493adef8"
+        export COMPILATION_RESULT="$(cat /workspace/compilation_result_id.txt)"
         export GCP_PROJECT_ID=neat-striker-447409-t5
-        python -m dataform_unit_testing
+        python -m dataform_unit_tests
 
 # export COMPILATION_RESULT="$(cat /workspace/compilation_result_id.txt)"
 
