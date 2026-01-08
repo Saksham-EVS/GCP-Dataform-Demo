@@ -24,7 +24,8 @@ steps:
         echo "------------------------------- RESPONSE FROM API -------------------------"
         echo "$_RESPONSE" | tee /workspace/response.json
 
-        _COMPILATION_RESULT_ID=$(echo "$_RESPONSE" | jq -r '.name') echo "$_COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
+        _COMPILATION_RESULT_ID=$(echo "$_RESPONSE" | jq -r '.name') 
+        echo "$_COMPILATION_RESULT_ID" > /workspace/compilation_result_id.txt
         echo "------------------------------ COMPILATION_RESULT_ID --------------------------"
         echo "Compilation Result ID: ${_COMPILATION_RESULT_ID}"
 
@@ -46,7 +47,7 @@ steps:
         pip install --no-cache-dir db-dtypes pandas pyarrow
         export COMPILATION_RESULT="$(cat /workspace/compilation_result_id.txt)"
         export GCP_PROJECT_ID=neat-striker-447409-t5
-        python -m dataform_unit_tests
+        python -m dataform-unit-tests
 
 # export COMPILATION_RESULT="$(cat /workspace/compilation_result_id.txt)"
 
