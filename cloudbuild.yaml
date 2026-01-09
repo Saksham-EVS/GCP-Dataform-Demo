@@ -67,8 +67,7 @@ steps:
           --base test \
           --head dev \
           --title "Promote dev → test (Automated CI)" \
-          --body "Automated PR creation after successful unit testing." \
-          >dev/null
+          --body "Automated PR creation after successful unit testing.")
 
         _PR_NUMBER=$(echo "$_PR_URL" | sed 's#.*/##')
 
@@ -77,9 +76,8 @@ steps:
         echo ">>> Merging PR #$_PR_NUMBER"
         gh pr merge "$_PR_NUMBER" \
           --repo "Saksham-EVS/GCP-Dataform-Demo" \
-          --merge \f
-          --admin \
-          --delete-branch=false
+          --merge \
+          --admin 
 
         echo ">>> PR #$_PR_NUMBER merged successfully!"
 
