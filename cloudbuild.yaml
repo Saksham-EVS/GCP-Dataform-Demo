@@ -62,12 +62,13 @@ steps:
         echo "$$DF_GITHUB_TOKEN" | gh auth login --with-token
 
         echo ">>> Creating PR dev → test and Merging also"
-        gh pr merge "$(gh pr create \
+        gh pr create \
           --repo "Saksham-EVS/GCP-Dataform-Demo" \
           --base test \
           --head dev \
-          --title "Promote dev → test (Automated CI)" \ 
-          --body "Automated promotion triggered after successful Dataform unit tests.")" --merge --admin
+          --title "Promote dev → test (Automated CI)" \
+          --body "Automated promotion triggered after successful Dataform unit tests." \
+        | xargs gh pr merge --merge --admin
 
         echo ">>> PR merged successfully!"
 
