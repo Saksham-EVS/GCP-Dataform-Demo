@@ -62,24 +62,29 @@ steps:
         echo "$$DF_GITHUB_TOKEN" | gh auth login --with-token
 
         echo ">>> Creating PR dev → test"
-        _PR_URL=$(gh pr create \
+        gh pr create \
           --repo "Saksham-EVS/GCP-Dataform-Demo" \
           --base test \
           --head dev \
           --title "Promote dev → test (Automated CI)" \
-          --body "Automated PR creation after successful unit testing.")
+          --body "Automated promotion triggered after successful Dataform unit tests." \
+          >/dev/null
 
-        _PR_NUMBER=$(echo "$_PR_URL" | sed 's#.*/##')
-
-        echo ">>> Created PR #$_PR_NUMBER"
-
-        echo ">>> Merging PR #$_PR_NUMBER"
-        gh pr merge "$_PR_NUMBER" \
+        echo ">>> Fetching PR number for dev → test"
+        PR_NUMBER=$(gh pr list \
           --repo "Saksham-EVS/GCP-Dataform-Demo" \
-          --merge \
-          --admin 
+          --state open \
+          --base test \
+          --head dev \
+          --json number \
+          --jq '.[0].number')
 
-        echo ">>> PR #$_PR_NUMBER merged successfully!"
+        echo ">>> PR detected: #$PR_NUMBER"
+
+        echo ">>> Merging PR #$PR_NUMBER"
+        gh pr merge "$PR_NUMBER" --merge
+
+        echo ">>> PR #$PR_NUMBER merged successfully!"
 
 availableSecrets:
   secretManager:
