@@ -61,17 +61,23 @@ steps:
         echo ">>> Authenticating GitHub CLI"
         echo "$$DF_GITHUB_TOKEN" | gh auth login --with-token
 
-        echo ">>> Creating PR dev → test"
+        echo ">>> Configuring Git identity"
+        git config --global user.email "saksham.singla@evalueserve.com"
+        git config --global user.name "Saksham-EVS"
+        
+        echo ">>> Ensuring dev branch is up-to-date"
+        git checkout dev
         git add -A
-        git commit -m "temp commit for CI" || true
+        git commit -m "Temp CI commit" || true
+        git push origin dev
 
+        echo ">>> Creating PR dev → test"
         _PR_URL=$(gh pr create \
           --repo "Saksham-EVS/GCP-Dataform-Demo" \
           --base test \
           --head dev \
           --title "Promote dev → test (Automated CI)" \
           --body "Automated promotion triggered after successful Dataform unit tests.")
-
         echo ">>> Created PR at URL: $_PR_URL"
 
         echo ">>> Merging PR from URL"
