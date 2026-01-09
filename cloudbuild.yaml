@@ -71,7 +71,7 @@ steps:
           >/dev/null
 
         echo ">>> Fetching PR number for dev → test"
-        PR_NUMBER=$(gh pr list \
+        _PR_NUMBER=$(gh pr list \
           --repo "Saksham-EVS/GCP-Dataform-Demo" \
           --state open \
           --base test \
@@ -79,12 +79,12 @@ steps:
           --json number \
           --jq '.[0].number')
 
-        echo ">>> PR detected: #$PR_NUMBER"
+        echo ">>> PR detected: #$_PR_NUMBER"
 
-        echo ">>> Merging PR #$PR_NUMBER"
-        gh pr merge "$PR_NUMBER" --merge
+        echo ">>> Merging PR #$_PR_NUMBER"
+        gh pr merge "$_PR_NUMBER" --merge
 
-        echo ">>> PR #$PR_NUMBER merged successfully!"
+        echo ">>> PR #$_PR_NUMBER merged successfully!"
 
 availableSecrets:
   secretManager:
