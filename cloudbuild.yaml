@@ -59,7 +59,7 @@ steps:
         apt-get install -y ./gh_2.62.0_linux_amd64.deb >/dev/null
 
         echo ">>> Authenticating GitHub CLI"
-        echo "$DF_GITHUB_TOKEN" | gh auth login --with-token
+        echo "$$DF_GITHUB_TOKEN" | gh auth login --with-token
 
         echo ">>> Creating PR dev → test"
         PR_URL=$(gh pr create \
