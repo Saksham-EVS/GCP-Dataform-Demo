@@ -68,8 +68,7 @@ steps:
           --head dev \
           --title "Promote dev → test (Automated CI)" \
           --body "Automated PR creation after successful unit testing." \
-          --json url,number \
-          --jq '.url')
+          >dev/null
 
         _PR_NUMBER=$(echo "$_PR_URL" | sed 's#.*/##')
 
