@@ -61,21 +61,13 @@ steps:
         echo ">>> Authenticating GitHub CLI"
         echo "$$DF_GITHUB_TOKEN" | gh auth login --with-token
 
-        echo ">>> Creating PR dev → test"
-        _PR_URL=$(gh pr create \
+        echo ">>> Creating PR dev → test and Merging also"
+        gh pr merge "$(gh pr create \
           --repo "Saksham-EVS/GCP-Dataform-Demo" \
           --base test \
           --head dev \
-          --title "Promote dev → test (Automated CI)" \
-          --body "Automated promotion triggered after successful Dataform unit tests.")
-        echo ">>> Created PR at URL: $_PR_URL"
-        # gh pr view test
-        # _PR_URL=$(gh pr view test --json url --jq .url)
-
-        echo ">>> Created PR at URL: ${_PR_URL}"
-
-        echo ">>> Merging PR from URL"
-        gh pr merge "$_PR_URL" --merge --admin
+          --title "Promote dev → test (Automated CI)" \ 
+          --body "Automated promotion triggered after successful Dataform unit tests.")" --merge --admin
 
         echo ">>> PR merged successfully!"
 
