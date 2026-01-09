@@ -67,7 +67,7 @@ steps:
           --base test \
           --head dev \
           --title "Promote dev → test (Automated CI)" \
-          --body "Automated promotion triggered after successful Dataform unit tests."
+          --body "Automated promotion triggered after successful Dataform unit tests.")
         echo ">>> Created PR at URL: $_PR_URL"
         # gh pr view test
         # _PR_URL=$(gh pr view test --json url --jq .url)
