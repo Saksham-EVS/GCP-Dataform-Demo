@@ -67,8 +67,8 @@ steps:
           --base test \
           --head dev \
           --title "Promote dev → test (Automated CI)" \
-          --body "Automated promotion triggered after successful Dataform unit tests."\
-          --json url --jq .url)
+          --body "Automated promotion triggered after successful Dataform unit tests.")
+        
         echo ">>> Created PR at URL: $_PR_URL"
 
         echo ">>> Merging PR from URL"
