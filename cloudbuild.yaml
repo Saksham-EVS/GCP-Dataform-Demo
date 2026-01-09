@@ -62,7 +62,7 @@ steps:
         echo "$$DF_GITHUB_TOKEN" | gh auth login --with-token
 
         echo ">>> Creating PR dev → test"
-        PR_URL=$(gh pr create \
+        _PR_URL=$(gh pr create \
           --repo "Saksham-EVS/GCP-Dataform-Demo" \
           --base test \
           --head dev \
@@ -71,18 +71,18 @@ steps:
           --json url,number \
           --jq '.url')
 
-        PR_NUMBER=$(echo "$PR_URL" | sed 's#.*/##')
+        _PR_NUMBER=$(echo "$_PR_URL" | sed 's#.*/##')
 
-        echo ">>> Created PR #$PR_NUMBER"
+        echo ">>> Created PR #$_PR_NUMBER"
 
         echo ">>> Merging PR #$PR_NUMBER"
-        gh pr merge "$PR_NUMBER" \
+        gh pr merge "$_PR_NUMBER" \
           --repo "Saksham-EVS/GCP-Dataform-Demo" \
-          --merge \
+          --merge \f
           --admin \
           --delete-branch=false
 
-        echo ">>> PR #$PR_NUMBER merged successfully!"
+        echo ">>> PR #$_PR_NUMBER merged successfully!"
 
 availableSecrets:
   secretManager:
