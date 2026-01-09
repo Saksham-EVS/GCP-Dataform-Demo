@@ -1,50 +1,80 @@
 logsBucket: "gs://x-to-bq-training/bq-dataform_demo/logs"
-
+substitutions:
+  _LOCATION: us-central1
+  _REPO: dataform-demo
+  _PROJECT: neat-striker-447409-t5
 steps:
-  - id: "Creating json file"
-    name: "node:20"
-    entrypoint: "bash"
-    secretEnv: ["_DF_CRED"]
-    args:
-      - -c
-      - |
-        echo "$_DF_CRED" > /workspace/.df-credentials.json
+  # - id: "Dataform Compilation"
+  #   name: "node:20"
+  #   entrypoint: bash
+  #   args:
+  #     - -c
+  #     - |
+  #       npm install -g @dataform/cli
+  #       dataform compile --project-dir .
 
-  - id: "Install and Compile Dataform"
-    name: "node:20"
-    entrypoint: "bash"
-    args:
-      - -c
-      - |
-        npm install -g @dataform/cli
-        dataform compile > /workspace/compilation_result.json
-    
-  - id: "Extract CompilationResult Resource"
-    name: "jq"
-    entrypoint: "bash"
-    args:
-      - -c
-      - |
-        export RESULT=$(jq -r '.name' /workspace/compilation_result_gcp.json)
-        echo $RESULT > /workspace/compilation_result_uri
+  # - id: "Create Compilation Result Resource"
+  #   name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+  #   entrypoint: "bash"
+  #   secretEnv: ['DF_CRED']
+  #   args:
+  #     - -c
+  #     - |
+  #       echo "$$DF_CRED" > /workspace/.df-credentials.json
+  #       gcloud auth activate-service-account --key-file=/workspace/.df-credentials.json --project=${_PROJECT} --quiet
+  #       curl -s -X POST \
+  #         -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  #         -H "Content-Type: application/json" \
+  #         -d '{"gitCommitish":"dev"}' \
+  #         "https://dataform.googleapis.com/v1beta1/projects/${_PROJECT}/locations/${_LOCATION}/repositories/${_REPO}/compilationResults" \
+  #         | tee /workspace/response.json
+  #       tr -d '\r' < /workspace/response.json > /workspace/response_clean.json
 
-  - id: "Execute Dataform Unit Tests"
-    name: "python:3.11"
-    entrypoint: "bash"
+
+  # - id: "Execute Dataform Unit Tests"
+  #   name: "python:3.11"
+  #   entrypoint: "bash"
+  #   args:
+  #     - -c
+  #     - |
+  #       apt-get update && apt-get install -y jq
+  #       pip install --upgrade pip
+  #       pip install dataform-unit-tests google-cloud-bigquery-storage 
+  #       pip install --no-cache-dir db-dtypes pandas pyarrow
+  #       export COMPILATION_RESULT="$(jq -r '.name' /workspace/response_clean.json)"
+  #       export GCP_PROJECT_ID=${_PROJECT}
+  #       python -m dataform_unit_testing
+
+  - id: "Create and Merge PR to test"
+    name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+    entrypoint: bash
+    secretEnv: ["DF_GITHUB_TOKEN"]
     args:
       - -c
       - |
-        pip install --upgrade pip
-        pip install dataform-unit-tests
-        export COMPILATION_RESULT=$(cat /workspace/compilation_result_uri)
-        python -m dataform_unit_testing
-    env:
-      - COMPILATION_RESULT=/workspace/compilation_result.json
-      - GCP_PROJECT_ID=neat-striker-447409-t5
+        echo ">>> Installing GitHub CLI"
+        apt-get update -y && apt-get install -y wget git >/dev/null
+
+        wget -q https://github.com/cli/cli/releases/download/v2.62.0/gh_2.62.0_linux_amd64.deb
+        apt-get install -y ./gh_2.62.0_linux_amd64.deb >/dev/null
+
+        echo ">>> Authenticating GitHub CLI"
+        echo "$$DF_GITHUB_TOKEN" | gh auth login --with-token
+
+        echo ">>> Creating PR dev → test and Merging also"
+        gh pr create \
+          --repo "Saksham-EVS/GCP-Dataform-Demo" \
+          --base test \
+          --head dev \
+          --title "Promote dev → test (Automated CI)" \
+          --body "Automated promotion triggered after successful Dataform unit tests." \
+        | xargs gh pr merge --merge --admin
+
+        echo ">>> PR merged successfully!"
 
 availableSecrets:
   secretManager:
-    - versionName: "projects/648723306784/secrets/Dataform-sec/versions/latest"
-      env: "_DF_CRED"
-
-
+    # - versionName: projects/648723306784/secrets/Dataform-secret/versions/latest
+    #   env: 'DF_CRED'
+    - versionName: projects/648723306784/secrets/Dataform-ss-evs/versions/latest
+      env: "DF_GITHUB_TOKEN"
