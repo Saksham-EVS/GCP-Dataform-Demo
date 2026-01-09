@@ -75,7 +75,7 @@ steps:
 
         echo ">>> Created PR #$_PR_NUMBER"
 
-        echo ">>> Merging PR #$PR_NUMBER"
+        echo ">>> Merging PR #$_PR_NUMBER"
         gh pr merge "$_PR_NUMBER" \
           --repo "Saksham-EVS/GCP-Dataform-Demo" \
           --merge \f
