@@ -81,7 +81,7 @@ steps:
 
 availableSecrets:
   secretManager:
-    - versionName: projects/648723306784/secrets/Dataform-secret/versions/latest
-      env: 'DF_CRED'
+    # - versionName: projects/648723306784/secrets/Dataform-secret/versions/latest
+    #   env: 'DF_CRED'
     - versionName: projects/648723306784/secrets/Dataform-ss-evs/versions/latest
       env: "DF_GITHUB_TOKEN"
