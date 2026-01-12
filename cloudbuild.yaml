@@ -52,13 +52,11 @@ steps:
     args:
       - -c
       - |
-        echo ">>> Installing GitHub CLI"
         apt-get update -y && apt-get install -y wget git >/dev/null
 
         wget -q https://github.com/cli/cli/releases/download/v2.62.0/gh_2.62.0_linux_amd64.deb
         apt-get install -y ./gh_2.62.0_linux_amd64.deb >/dev/null
 
-        echo ">>> Authenticating GitHub CLI"
         echo "$$DF_GITHUB_TOKEN" | gh auth login --with-token
 
         echo ">>> Creating PR dev → test and Merging also"
