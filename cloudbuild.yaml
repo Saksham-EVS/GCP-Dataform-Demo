@@ -47,13 +47,14 @@ steps:
       - |
         set -euo pipefail
         echo ">>> Installing Python dependencies..."
-        apt-get update && apt-get install -y jq | tee /workspace/apt_install.log
-        pip install --upgrade pip | tee /workspace/pip_upgrade.log
-        pip install dataform-unit-tests google-cloud-bigquery-storage db-dtypes pandas pyarrow | tee /workspace/pip_install.log
+        apt-get update && apt-get install -y jq 
+        pip install --upgrade pip 
+        pip install dataform-unit-tests google-cloud-bigquery-storage 
+        pip install --no-cache-dir db-dtypes pandas pyarrow 
         echo ">>> Running Dataform unit tests..."
         export COMPILATION_RESULT="$(jq -r '.name' /workspace/response_clean.json)"
         export GCP_PROJECT_ID=${_PROJECT}
-        python -m dataform_unit_testing | tee /workspace/unit_tests.log
+        python -m dataform_unit_testing
         echo ">>> Unit tests completed."
 
   - id: "Create and Merge PR to test"
@@ -77,8 +78,7 @@ steps:
           --head dev \
           --title "Promote dev → test (Automated CI)" \
           --body "Automated promotion triggered after successful Dataform unit tests." \
-        | tee /workspace/pr_create.log \
-        | xargs gh pr merge --merge --admin | tee /workspace/pr_merge.log
+        | xargs gh pr merge --merge --admin
         echo ">>> PR merged successfully!"
 
 availableSecrets:
