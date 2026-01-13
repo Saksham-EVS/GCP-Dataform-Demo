@@ -36,7 +36,7 @@ steps:
           -d '{"gitCommitish":"dev"}' \
           "https://dataform.googleapis.com/v1beta1/projects/${_PROJECT}/locations/${_LOCATION}/repositories/${_REPO}/compilationResults" \
           | tee /workspace/response.json
-        tr -d '\r' < /workspace/response.json | jq '.' | tee /workspace/response_clean.json
+        tr -d '\r' < /workspace/response.json > /workspace/response_clean.json
         echo ">>> Compilation result resource created."
 
   - id: "Execute Dataform Unit Tests"
