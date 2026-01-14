@@ -17,15 +17,19 @@ steps:
   # ----------------------------------------------------
   # 2. Trigger Composer DAG directly from Cloud Build
   # ----------------------------------------------------
-  - id: "Trigger Composer DAG"
-    name: gcr.io/cloud-builders/gcloud
+  - id: "Trigger Composer DAG via Composer 3 API"
+    name: gcr.io/cloud-builders/curl
     entrypoint: bash
     args:
       - -c
       - |
-        echo "Triggering Composer DAG: dataform_prod_cd"
-        gcloud composer environments run dataform_env \
-          --location us-central1 \
-          dags trigger dataform_prod_cd
+        echo "Triggering DAG: dataform_prod_cd on Composer 3"
+
+        curl -X POST \
+          -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+          -H "Content-Type: application/json" \
+          -d '{"dagId": "dataform_prod_cd"}' \
+          "https://composer.googleapis.com/v1/projects/neat-striker-447409-t5/locations/us-central1/environments/dataform-env:run"
+
 
 timeout: "1200s"   # 20 minutes
