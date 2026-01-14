@@ -29,7 +29,7 @@ steps:
           -H "Authorization: Bearer $(gcloud auth print-access-token)" \
           -H "Content-Type: application/json" \
           -d '{"dagId": "dataform_prod_cd"}' \
-          "https://composer.googleapis.com/v1/projects/neat-striker-447409-t5/locations/us-central1/environments/dataform-env:run"
+          "https://5e50db17c6ec426fa07c5fb7902078c0-dot-us-central1.composer.googleusercontent.com/api/v2/dags/dataform_prod_cd/dagRuns"
 
 
 timeout: "1200s"   # 20 minutes
