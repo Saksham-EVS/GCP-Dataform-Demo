@@ -18,7 +18,7 @@ steps:
   # 2. Trigger Composer DAG directly from Cloud Build
   # ----------------------------------------------------
   - id: "Trigger Composer DAG via Composer 3 API"
-    name: gcr.io/cloud-builders/curl
+    name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
     entrypoint: bash
     args:
       - -c
