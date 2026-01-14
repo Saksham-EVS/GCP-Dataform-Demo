@@ -1,0 +1,31 @@
+logsBucket: "gs://x-to-bq-training/bq-dataform_demo/logs"
+steps:
+
+  # ----------------------------------------------------
+  # 1. (Optional) Print environment metadata for debugging
+  # ----------------------------------------------------
+  - id: "Debug Build Info"
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        echo "Starting Production CD Pipeline..."
+        echo "Branch: $BRANCH_NAME"
+        echo "Commit: $COMMIT_SHA"
+
+  # ----------------------------------------------------
+  # 2. Trigger Composer DAG directly from Cloud Build
+  # ----------------------------------------------------
+  - id: "Trigger Composer DAG"
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        echo "Triggering Composer DAG: dataform_prod_cd"
+        gcloud composer environments run dataform_env \
+          --location us-central1 \
+          dags trigger dataform_prod_cd
+
+timeout: "1200s"   # 20 minutes
