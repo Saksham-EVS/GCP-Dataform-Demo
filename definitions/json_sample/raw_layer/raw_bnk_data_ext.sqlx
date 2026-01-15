@@ -5,7 +5,6 @@ config {
     hasOutput: true
 }
 
--- Define external table
 CREATE OR REPLACE EXTERNAL TABLE raw_dataform.raw_bnk_data_ext
 OPTIONS (
   format = 'JSON',
