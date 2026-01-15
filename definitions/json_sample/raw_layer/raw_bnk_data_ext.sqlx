@@ -1,0 +1,12 @@
+config {
+    type: "operations",
+    schema: "raw_dataform",
+    name: "raw_bnk_data_ext",
+    hasOutput: true
+}
+
+CREATE OR REPLACE EXTERNAL TABLE raw_dataform.raw_bnk_data_ext
+OPTIONS (
+  format = 'JSON',
+  uris = ['gs://x-to-bq-training/bq-dataform_demo/banking_data.jsonl']
+)
