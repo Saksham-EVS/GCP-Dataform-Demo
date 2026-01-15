@@ -1,0 +1,13 @@
+config {
+    type: "operations",
+    schema: "raw_dataform",
+    name: "raw_qc_orders_ext",
+    hasOutput: true
+}
+
+-- Define external table
+CREATE OR REPLACE EXTERNAL TABLE raw_dataform.raw_qc_orders_ext
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://x-to-bq-training/bq-dataform_demo/qc_orders.parquet']
+)
