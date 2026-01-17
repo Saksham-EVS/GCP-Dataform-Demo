@@ -26,6 +26,6 @@ steps:
         curl -X POST \
           -H "Authorization: Bearer $(gcloud auth print-access-token)" \
           -H "Content-Type: application/json" \
-          -d '{"dagId": "dataform_prod_cd"}' \
+          -d "{\"dag_run_id\": \"manual_${BRANCH_NAME}_${COMMIT_SHA}_$(date +%s)\"}" \
           "https://3dcb274976a04d0eafb35ad24ce84b79-dot-us-central1.composer.googleusercontent.com/api/v1/dags/dataform_prod_cd/dagRuns"
 timeout: "1200s"   # 20 minutes
