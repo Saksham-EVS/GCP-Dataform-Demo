@@ -1,0 +1,13 @@
+config {
+    type: "table",
+    schema: "transform_dataform",
+    name: "fact_qc"
+}
+
+SELECT
+  order_id,
+  DATE(order_timestamp) AS order_date,
+  SUM(quantity) AS total_items,
+  delivery_status
+FROM ${ref("stg_qc_orders")}
+GROUP BY order_id, order_date, delivery_status
