@@ -1,0 +1,13 @@
+config {
+  type: "operations",
+  name: "fct_daily_order",
+  tags: ["external", "gcs", "daily"]
+}
+
+
+LOAD DATA OVERWRITE `${project_configs.projectId}.${project_configs.env_map[project_configs.projectId].dataset}.fct_daily_order`
+
+FROM FILES (
+  format = 'PARQUET',
+  uris = ['gs://${project_configs.env_map[project_configs.projectId].bucket}/qc_orders.parquet']
+)

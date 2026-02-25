@@ -1,0 +1,7 @@
+config {
+    name: "fct_daily",
+    type: "incremental",
+    tags: ["daily"]
+}
+
+SELECT * FROM `${project_configs.projectId}.${project_configs.env_map[project_configs.projectId].dataset}.fct_daily_order`
