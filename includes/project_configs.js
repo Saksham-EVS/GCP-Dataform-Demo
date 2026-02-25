@@ -6,7 +6,7 @@ const env_map = {
     },
     "my-qa-project": {
       env: "qa",
-      bucket: "qa-raw-bucket",
+      bucket: "qa-raw",
       dataset: "qa_landing"
     },
     "my-prod-project": {
